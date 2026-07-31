@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: fayda-bot
+    env: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: python -m app.main
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: fayda-bot-db
+          property: connectionString
+      - key: FAYDA_VERIFY_BASE_URL
+        sync: false
+      - key: FAYDA_API_KEY
+        sync: false
+      - key: CHAPA_SECRET_KEY
+        sync: false
+      - key: CHAPA_BASE_URL
+        value: https://api.chapa.co/v1
+      - key: PAYMENT_WEBHOOK_SECRET
+        sync: false
+
+databases:
+  - name: fayda-bot-db
+    plan: starter

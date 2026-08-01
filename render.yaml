@@ -6,6 +6,8 @@ services:
     buildCommand: pip install -r requirements.txt
     startCommand: python -m app.main
     envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.6
       - key: BOT_TOKEN
         sync: false
       - key: DATABASE_URL

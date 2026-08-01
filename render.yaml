@@ -2,7 +2,7 @@ services:
   - type: web
     name: fayda-bot
     env: python
-    plan: starter
+    plan: free
     buildCommand: pip install -r requirements.txt
     startCommand: python -m app.main
     envVars:
@@ -25,4 +25,4 @@ services:
 
 databases:
   - name: fayda-bot-db
-    plan: starter
+    plan: free

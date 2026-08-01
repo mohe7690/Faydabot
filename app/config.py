@@ -10,10 +10,21 @@ def _int_list(raw: str) -> list[int]:
     return [int(x) for x in raw.split(",") if x.strip()]
 
 
+def _normalize_db_url(raw: str) -> str:
+    # Render (and most managed Postgres providers) hand back postgres:// or
+    # postgresql://, but the async SQLAlchemy engine needs the asyncpg dialect
+    # spelled out explicitly.
+    if raw.startswith("postgres://"):
+        return raw.replace("postgres://", "postgresql+asyncpg://", 1)
+    if raw.startswith("postgresql://") and "+asyncpg" not in raw:
+        return raw.replace("postgresql://", "postgresql+asyncpg://", 1)
+    return raw
+
+
 @dataclass(frozen=True)
 class Settings:
     bot_token: str = os.environ["BOT_TOKEN"]
-    database_url: str = os.environ["DATABASE_URL"]
+    database_url: str = _normalize_db_url(os.environ["DATABASE_URL"])
 
     price_pdf_download: int = int(os.getenv("PRICE_PDF_DOWNLOAD", "10"))
     price_print_otp: int = int(os.getenv("PRICE_PRINT_OTP", "30"))
